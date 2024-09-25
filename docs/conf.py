@@ -535,3 +535,9 @@ def setup(app):
     app.connect("source-read", rstjinja_source)
     app.connect("include-read", rstjinja_include)
 
+
+html_sidebars = {
+    'index': []  # No primary sidebar for the index.rst page
+}
+
+
