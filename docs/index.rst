@@ -5,18 +5,8 @@
    :description: Technical University of Denmark (DTU) Python Installation Support
    :keywords: dtudk, dtu, support, python, python3, pip, pip3, conda, venv, virtualenv
 
-.. todolist::
-
-
-DTU Python Installation Support
-===============================
-
-
 .. raw:: html
-   :file: html/main_banner.html
-
-Our goal is to ensure that students can get a Python
-environment up and running according to the needs of DTU courses.
+   :file: html/hero.html
 
 
 .. _reach-us-reference:
@@ -106,4 +96,3 @@ Office hours
    learn-more/index.rst
    videos/index.rst
    uninstall/index.rst
-
