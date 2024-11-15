@@ -272,7 +272,8 @@ _icon_links = [
 
 
 html_theme_options = {
-    "navbar_center": ["logo_button.html", "navbar-nav"],
+    "navbar_start": ["logo_button.html"],
+    "navbar_center": ["navbar-nav"],
     "navbar_end": ["theme-switcher"],
     "icon_links": _icon_links,
     "header_links_before_dropdown": 10,
@@ -414,6 +415,7 @@ _week_days = [
     "Saturday",
     "Sunday",
 ]
+
 _week_days_dict = dict((day, i) for i, day in enumerate(_week_days))
 
 _days = _pythonsupport["online-days"]

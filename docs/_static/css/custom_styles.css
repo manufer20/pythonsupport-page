@@ -1079,3 +1079,14 @@ since it is also on the header.
       overflow: hidden;
     }
   }
+
+
+  .navbar-header-items {
+    margin-left: -12% !important; /* Change this value as needed */
+}
+
+/* Adjust the height of the header */
+.navbar {
+    max-height: 50px !important; /* Aligns the text vertically */
+}
+
