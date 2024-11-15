@@ -1,21 +1,28 @@
-.. _homepage-reference:
+:html_theme.sidebar_secondary.remove: true
 
 .. meta::
    :description: Technical University of Denmark (DTU) Python Installation Support
    :keywords: dtudk, dtu, support, python, python3, pip, pip3, conda, venv, virtualenv
 
-.. todolist::
+.. Temporary extra open information
+
+.. article-info::
+   :author: Extra exam period open!
+   :date: Friday 6th of December, 2024
+   :read-time: 10-16 and 18-22
+   :class-container: sd-text-center sd-p-2 sd-outline-primary sd-bg-primary sd-text-light sd-rounded-2 sd-shadow-md sd-animate-grow50
+
+.. article-info::
+   :author: Extra exam period open!
+   :date: Thursday 19th of December, 2024
+   :read-time: 10-14
+   :class-container: sd-text-center sd-p-2 sd-outline-primary sd-bg-primary sd-text-light sd-rounded-2 sd-shadow-md sd-animate-grow50
 
 
-DTU Python Installation Support
-===============================
-
+.. _homepage-reference:
 
 .. raw:: html
-   :file: html/main_banner.html
-
-Our goal is to ensure that students can get a Python
-environment up and running according to the needs of DTU courses.
+   :file: html/hero.html
 
 
 .. _reach-us-reference:
@@ -106,4 +113,7 @@ Office hours
    learn-more/index.rst
    videos/index.rst
    uninstall/index.rst
+   commonproblems/index.rst
 
+
+.. todolist::

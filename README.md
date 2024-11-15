@@ -1,5 +1,4 @@
-DTU Python support homepage
-===========================
+# DTU Python support homepage
 
 Welcome to the DTU Python support development site.
 
@@ -11,8 +10,7 @@ packages for a course at DTU, please visit
 
 
 
-Building the documentation
---------------------------
+## Building the documentation
 
 To build the documentation in a controlled environment we recommend you
 to use a virtual environment.
@@ -28,7 +26,7 @@ The steps can be outlined like this:
 
 2. Install the requirements:
 
-       python3 -m pip install -r requirements.txt
+       python3 -m pip install -r requirements.txt sphinx-autobuild
        # currently there is a blocking dependency on some of the
        # packages listed in requirements.txt, however, since pip
        # will allow updating a package that breaks compatibility, we
@@ -37,21 +35,43 @@ The steps can be outlined like this:
        #    :fingers_crossed:
        python3 -m pip install -U "sphinx>=7.2.5"
 
-3. Build documentation
+3. Development server (optional)
+
+       make livehtml
+
+   This will open a local webserver that auto-reloads whenever you make 
+   changes to the `rst` documentation or any files in the `docs/` directory.
+
+4. Build documentation
 
        make
 
    Now the documentation is build and can be found in `build/html`.
 
-4. Open the documentation:
+5. Open the documentation:
 
        firefox build/html/index.html
 
    And you should be ready to see the just build documentation.
 
+### Creating the `gifs`
 
-Running Locally in Podman
--------------------------
+There are some gifs used to show how the terminal looks like.
+
+In order to create these one requires these small packages (which are javascript):
+
+- `npm` (Node.js package manager)
+- `terminalizer` (the script that generates GIFs from `yaml` files)
+
+Once these are installed, simply do:
+
+    make gifs
+
+and the gifs should be created. The script will only create them once,
+and keep them around. So this should only be required to be done once.
+
+
+## Running Locally in Podman
 
 You can easily run the site locally (and deployed) using containers. You'll need:
 - `podman` (or `docker`)
