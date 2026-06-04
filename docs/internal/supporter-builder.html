@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DTU Python Installation Support – Supporter Command Builder</title>
+  <style>
+    @font-face {
+      font-family: NeoSans;
+      src: url('../_static/fonts/Neo Sans Std Regular/Neo Sans Std Regular.otf') format('opentype');
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: NeoSans;
+      src: url('../_static/fonts/Neo Sans Std Bold/Neo Sans Std Bold.otf') format('opentype');
+      font-weight: 700;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: NeoSans;
+      src: url('../_static/fonts/Neo Sans Std Light/Neo Sans Std Light.otf') format('opentype');
+      font-weight: 300;
+      font-style: normal;
+    }
+
+    :root {
+      --dtu-red: #E83F48;
+      --dtu-red-corporate: #900;
+      --dtu-blue: #2f3eea;
+      --dtu-navy: #030f4f;
+      --dtu-white: #fff;
+      --page-bg: #f3f4f5;
+      --surface: #ffffff;
+      --surface-soft: #f8f9fb;
+      --text: #222832;
+      --muted: #48566b;
+      --border: #d1d5d9;
+      --border-soft: #e1e5ea;
+      --success: #008835;
+      --radius: 14px;
+      --shadow: 0 2px 8px rgb(0 0 0 / 5%);
+      --content-width: min(1310px, calc(100vw - 56px));
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+
+    body {
+      font-family: NeoSans, Arial, sans-serif;
+      background: var(--page-bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      width: var(--content-width);
+      margin: 0 auto;
+      padding: 34px 0 42px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+      align-items: start;
+      margin-bottom: 22px;
+    }
+
+
+    
+    .hero-copy h1 {
+      margin: 0 0 12px;
+      font-size: clamp(2.4rem, 4vw, 3.4rem);
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+      color: #1f2937;
+      font-weight: 700;
+    }
+
+    .hero-copy p {
+      margin: 0 0 18px;
+      max-width: 860px;
+      font-size: 1rem;
+      line-height: 1.65;
+      color: #2d3748;
+    }
+
+
+
+    .builder-shell {
+      display: grid;
+      gap: 18px;
+    }
+
+    .builder-shell {
+      display: grid;
+      gap: 18px;
+    }
+
+    .preset-row,
+    .section-actions,
+    .selection-list,
+    .command-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 1.55fr) minmax(340px, 0.85fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .stack {
+      display: grid;
+      gap: 18px;
+    }
+
+    .group,
+    .panel {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: none;
+    }
+
+    .group {
+      padding: 22px;
+    }
+
+    .group-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .group h2,
+    .panel h2 {
+      margin: 0;
+      font-size: 1.75rem;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      color: #222832;
+      font-weight: 700;
+    }
+
+    .group p,
+    .hint,
+    .tiny,
+    .panel p {
+      color: #48566b;
+      line-height: 1.55;
+    }
+
+    .group p,
+    .panel p {
+      margin: 8px 0 0;
+      font-size: 0.98rem;
+    }
+
+    .tiny {
+      font-size: 0.8rem;
+    }
+
+    .os-toggle {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      background: #f3f4f5;
+      padding: 6px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .os-option {
+      border: 0;
+      background: transparent;
+      color: #51637b;
+      padding: 11px 18px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      font-weight: 700;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    .os-option:hover {
+      color: #222832;
+      background: rgb(255 255 255 / 60%);
+    }
+
+    .os-option.active {
+      background: #fff;
+      color: var(--dtu-red);
+      box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
+    }
+
+    .os-help {
+      margin-top: 12px;
+      font-size: 0.93rem;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .search {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 10px;
+      padding: 13px 14px;
+      font-size: 0.98rem;
+      font-family: inherit;
+      color: #222832;
+      outline: none;
+    }
+
+    .search:focus {
+      border-color: var(--dtu-red);
+      box-shadow: 0 0 0 3px rgb(232 63 72 / 12%);
+    }
+
+    .ghost-btn,
+    .primary-btn,
+    .preset,
+    .mini-btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      color: #48566b;
+      border-radius: 10px;
+      padding: 11px 14px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      font-weight: 400;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    .mini-btn {
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.8rem;
+    }
+
+    .ghost-btn:hover,
+    .preset:hover,
+    .mini-btn:hover {
+      color: var(--dtu-red);
+      border-color: var(--dtu-red);
+      background: #fff;
+    }
+
+    .primary-btn {
+      background: var(--dtu-red);
+      border-color: var(--dtu-red);
+      color: #fff;
+    }
+
+    .primary-btn:hover {
+      background: var(--dtu-red-corporate);
+      border-color: var(--dtu-red-corporate);
+      color: #fff;
+    }
+
+    .preset-row {
+      margin-bottom: 16px;
+    }
+
+    .preset.active {
+      color: var(--dtu-red);
+      border-color: var(--dtu-red);
+      background: rgb(232 63 72 / 6%);
+    }
+
+    .section-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .section {
+      border: 1px solid var(--border-soft);
+      border-radius: 14px;
+      padding: 16px;
+      background: #fff;
+    }
+
+    .section-title {
+      margin: 0 0 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 1.12rem;
+      line-height: 1.2;
+      font-weight: 700;
+      color: #222832;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .action {
+      position: relative;
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 12px;
+      padding: 14px 16px 14px 46px;
+      cursor: pointer;
+      transition: 0.15s ease;
+      min-height: 92px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .action:hover {
+      border-color: var(--dtu-red);
+      background: rgb(232 63 72 / 3%);
+    }
+
+    .action input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .check {
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      border: 1.5px solid #cbd5e1;
+      display: grid;
+      place-items: center;
+      color: transparent;
+      font-size: 13px;
+      font-weight: 900;
+      background: #fff;
+    }
+
+    .action[data-selected="true"] {
+      border-color: var(--dtu-red);
+      background: rgb(232 63 72 / 6%);
+    }
+
+    .action[data-selected="true"] .check {
+      background: var(--dtu-red);
+      border-color: var(--dtu-red);
+      color: #fff;
+    }
+
+    .action .name {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: #222832;
+      margin-bottom: 4px;
+    }
+
+    .action .desc {
+      font-size: 0.84rem;
+      color: #667085;
+      line-height: 1.45;
+    }
+
+    .action .token {
+      display: inline-flex;
+      width: fit-content;
+      margin-top: 8px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 11px;
+      color: #667085;
+    }
+
+    .panel {
+      position: sticky;
+      top: 100px;
+      padding: 22px;
+      background: #fff;
+    }
+
+    .panel p {
+      margin-bottom: 14px;
+    }
+
+    .summary-box,
+    pre {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    .summary-box {
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+
+    .summary-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid #edf1f5;
+      font-size: 0.92rem;
+      color: #344054;
+    }
+
+    .summary-row:last-child {
+      border-bottom: 0;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgb(232 63 72 / 8%);
+      color: var(--dtu-red);
+      font-weight: 700;
+      font-size: 0.8rem;
+    }
+
+    .selection-list {
+      margin-top: 10px;
+    }
+
+    .selection-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 7px 10px;
+      background: #f3f4f5;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #48566b;
+    }
+
+    .remove-pill {
+      display: inline-grid;
+      place-items: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      border: 0;
+      background: rgb(16 24 40 / 8%);
+      color: #48566b;
+      font-size: 11px;
+      font-weight: 900;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .warn {
+      margin: 12px 0 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: rgb(232 63 72 / 8%);
+      color: var(--dtu-red-corporate);
+      font-size: 0.82rem;
+      line-height: 1.45;
+      display: none;
+    }
+
+    .warn.show {
+      display: block;
+    }
+
+    .code-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .code-head .tiny {
+      margin: 0;
+    }
+
+    pre {
+      margin: 0;
+      padding: 16px;
+      overflow: auto;
+      background: #222832;
+      color: #f8fafc;
+      min-height: 260px;
+      font-size: 13px;
+      line-height: 1.6;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    .panel-actions {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .copy-note {
+      margin-top: 10px;
+      min-height: 18px;
+      font-size: 0.82rem;
+      color: var(--success);
+    }
+
+    .footer {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      color: #667085;
+      font-size: 0.82rem;
+      line-height: 1.6;
+    }
+
+    .hide {
+      display: none !important;
+    }
+
+    @media (max-width: 1120px) {
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+
+      .panel {
+        position: static;
+      }
+
+      .actions {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .hero-copy h1 {
+        font-size: 2.5rem;
+      }
+
+      .toolbar,
+      .panel-actions,
+      .actions,
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="page">
+    <section class="hero">
+      <div class="hero-copy">
+        <h1>Supporter command builder</h1>
+        <p>
+          A fast internal tool for supporters. After checking the student computer and identifying the issue,
+          select the relevant repair components and copy one dispatcher command.
+        </p>
+      </div>
+    </section>
+
+    <section class="builder-shell" id="builder">
+
+      <section class="workspace">
+        <div class="stack">
+          <section class="group">
+            <div class="group-header">
+              <div>
+                <h2>Choose operating system</h2>
+                <p>Use tabs instead of dropdowns so supporters can switch instantly.</p>
+              </div>
+            </div>
+
+            <div class="os-toggle" role="tablist" aria-label="Operating system selector">
+              <button class="os-option active" data-os="mac" role="tab" aria-selected="true">macOS</button>
+              <button class="os-option" data-os="windows" role="tab" aria-selected="false">Windows</button>
+            </div>
+
+            <div class="os-help hint">
+              The generated command uses a single dispatcher entry point and passes the selected actions as arguments.
+            </div>
+          </section>
+
+          <section class="group">
+            <div class="group-header">
+              <div>
+                <h2>Select fixes</h2>
+                <p>Search, click a preset, or tick individual components.</p>
+              </div>
+            </div>
+
+            <div class="toolbar">
+              <input id="searchBox" class="search" type="search" placeholder="Search actions… e.g. vscode, conda, packages, kernel" />
+              <button id="expandPresetHealth" class="ghost-btn" type="button">Add health check</button>
+              <button id="clearAll" class="ghost-btn" type="button">Clear all</button>
+            </div>
+
+            <div class="preset-row" aria-label="Quick presets">
+              <button class="preset" type="button" data-preset="vscode_repair">VS Code repair</button>
+              <button class="preset" type="button" data-preset="conda_reset">Conda reset</button>
+              <button class="preset" type="button" data-preset="first_year_setup">1st-year setup</button>
+              <button class="preset" type="button" data-preset="health_only">Health check only</button>
+            </div>
+
+            <div class="section-grid" id="sectionsRoot">
+              <section class="section" data-section>
+                <h3 class="section-title">
+                  <span>VS Code <span class="tiny">Editor and extensions</span></span>
+                  <span class="section-actions">
+                    <button class="mini-btn" type="button" data-section-select>All</button>
+                    <button class="mini-btn" type="button" data-section-clear>None</button>
+                  </span>
+                </h3>
+                <div class="actions">
+                  <label class="action" data-name="Install VS Code" data-selected="false">
+                    <input type="checkbox" data-token="install_vscode" />
+                    <span class="check">✓</span>
+                    <span class="name">Install VS Code</span>
+                    <span class="desc">Install the editor with your standard DTU setup.</span>
+                    <span class="token">install_vscode</span>
+                  </label>
+
+                  <label class="action" data-name="Uninstall VS Code" data-selected="false">
+                    <input type="checkbox" data-token="uninstall_vscode" />
+                    <span class="check">✓</span>
+                    <span class="name">Uninstall VS Code</span>
+                    <span class="desc">Remove the editor before a clean reinstall.</span>
+                    <span class="token">uninstall_vscode</span>
+                  </label>
+
+                  <label class="action" data-name="Install extensions" data-selected="false">
+                    <input type="checkbox" data-token="install_extensions" />
+                    <span class="check">✓</span>
+                    <span class="name">Install extensions</span>
+                    <span class="desc">Apply the standard support extension bundle.</span>
+                    <span class="token">install_extensions</span>
+                  </label>
+
+                  <label class="action" data-name="Apply VS Code settings" data-selected="false">
+                    <input type="checkbox" data-token="apply_vscode_settings" />
+                    <span class="check">✓</span>
+                    <span class="name">Apply VS Code settings</span>
+                    <span class="desc">Reapply workspace and user settings.</span>
+                    <span class="token">apply_vscode_settings</span>
+                  </label>
+                </div>
+              </section>
+
+              <section class="section" data-section>
+                <h3 class="section-title">
+                  <span>Conda / Python <span class="tiny">Environment management</span></span>
+                  <span class="section-actions">
+                    <button class="mini-btn" type="button" data-section-select>All</button>
+                    <button class="mini-btn" type="button" data-section-clear>None</button>
+                  </span>
+                </h3>
+                <div class="actions">
+                  <label class="action" data-name="Install Miniforge / Conda" data-selected="false">
+                    <input type="checkbox" data-token="install_conda" />
+                    <span class="check">✓</span>
+                    <span class="name">Install Miniforge / Conda</span>
+                    <span class="desc">Install the supported Conda distribution.</span>
+                    <span class="token">install_conda</span>
+                  </label>
+
+                  <label class="action" data-name="Uninstall Conda" data-selected="false">
+                    <input type="checkbox" data-token="uninstall_conda" />
+                    <span class="check">✓</span>
+                    <span class="name">Uninstall Conda</span>
+                    <span class="desc">Remove broken or duplicate Conda installs.</span>
+                    <span class="token">uninstall_conda</span>
+                  </label>
+
+                  <label class="action" data-name="Repair shell / PATH" data-selected="false">
+                    <input type="checkbox" data-token="repair_path" />
+                    <span class="check">✓</span>
+                    <span class="name">Repair shell / PATH</span>
+                    <span class="desc">Fix startup scripts and executable resolution.</span>
+                    <span class="token">repair_path</span>
+                  </label>
+
+                  <label class="action" data-name="Install pinned Python" data-selected="false">
+                    <input type="checkbox" data-token="install_python" />
+                    <span class="check">✓</span>
+                    <span class="name">Install pinned Python</span>
+                    <span class="desc">Install the course-supported Python version.</span>
+                    <span class="token">install_python</span>
+                  </label>
+                </div>
+              </section>
+
+              <section class="section" data-section>
+                <h3 class="section-title">
+                  <span>Packages and checks <span class="tiny">Course setup and validation</span></span>
+                  <span class="section-actions">
+                    <button class="mini-btn" type="button" data-section-select>All</button>
+                    <button class="mini-btn" type="button" data-section-clear>None</button>
+                  </span>
+                </h3>
+                <div class="actions">
+                  <label class="action" data-name="Install DTU packages" data-selected="false">
+                    <input type="checkbox" data-token="install_packages" />
+                    <span class="check">✓</span>
+                    <span class="name">Install DTU packages</span>
+                    <span class="desc">Install the standard package versions for 1st-year students.</span>
+                    <span class="token">install_packages</span>
+                  </label>
+
+                  <label class="action" data-name="Update packages" data-selected="false">
+                    <input type="checkbox" data-token="update_packages" />
+                    <span class="check">✓</span>
+                    <span class="name">Update packages</span>
+                    <span class="desc">Refresh package versions without reinstalling everything.</span>
+                    <span class="token">update_packages</span>
+                  </label>
+
+                  <label class="action" data-name="Run health check" data-selected="false">
+                    <input type="checkbox" data-token="health_check" />
+                    <span class="check">✓</span>
+                    <span class="name">Run health check</span>
+                    <span class="desc">Validate VS Code, Python, kernels, and package availability.</span>
+                    <span class="token">health_check</span>
+                  </label>
+
+                  <label class="action" data-name="Verify kernels" data-selected="false">
+                    <input type="checkbox" data-token="verify_kernels" />
+                    <span class="check">✓</span>
+                    <span class="name">Verify kernels</span>
+                    <span class="desc">Check whether notebook and VS Code kernels resolve correctly.</span>
+                    <span class="token">verify_kernels</span>
+                  </label>
+                </div>
+              </section>
+            </div>
+          </section>
+        </div>
+
+        <aside class="panel">
+          <h2>Generated command</h2>
+          <p class="hint">Live preview for supporters. Copy the command directly into the student terminal.</p>
+
+          <div class="summary-box">
+            <div class="summary-row">
+              <span>Operating system</span>
+              <span class="badge" id="osBadge">macOS</span>
+            </div>
+            <div class="summary-row">
+              <span>Selected actions</span>
+              <strong><span id="actionCount">0</span> / <span id="visibleCount">0</span> visible</strong>
+            </div>
+            <div class="selection-list" id="selectionList">
+              <span class="selection-pill">No actions selected yet</span>
+            </div>
+            <div class="warn" id="warningBox"></div>
+          </div>
+
+          <div class="code-head">
+            <p class="tiny">Prototype dispatcher names: <strong>run.sh</strong> and <strong>run.ps1</strong></p>
+          </div>
+          <pre><code id="commandOutput"></code></pre>
+
+          <div class="panel-actions">
+            <button class="primary-btn" id="copyBtn" type="button">Copy command</button>
+          </div>
+
+          <div class="command-meta">
+            <span class="utility-chip">Single dispatcher command</span>
+            <span class="utility-chip">Live preview</span>
+          </div>
+
+          <div class="copy-note" id="copyNote"></div>
+        </aside>
+      </section>
+
+      <div class="footer">
+        Standalone prototype styled with your site’s DTU color variables, NeoSans font setup, and header treatment.
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const osButtons = [...document.querySelectorAll('.os-option')];
+    const checkboxes = [...document.querySelectorAll('.action input[type="checkbox"]')];
+    const actionCards = [...document.querySelectorAll('.action')];
+    const commandOutput = document.getElementById('commandOutput');
+    const selectionList = document.getElementById('selectionList');
+    const actionCount = document.getElementById('actionCount');
+    const visibleCount = document.getElementById('visibleCount');
+    const osBadge = document.getElementById('osBadge');
+    const warningBox = document.getElementById('warningBox');
+    const searchBox = document.getElementById('searchBox');
+    const clearAll = document.getElementById('clearAll');
+    const expandPresetHealth = document.getElementById('expandPresetHealth');
+    const copyBtn = document.getElementById('copyBtn');
+    const copyNote = document.getElementById('copyNote');
+    const presetButtons = [...document.querySelectorAll('.preset')];
+    const sectionSelectButtons = [...document.querySelectorAll('[data-section-select]')];
+    const sectionClearButtons = [...document.querySelectorAll('[data-section-clear]')];
+    let currentOS = 'mac';
+
+    const presets = {
+      vscode_repair: ['uninstall_vscode', 'install_vscode', 'install_extensions', 'apply_vscode_settings', 'health_check'],
+      conda_reset: ['uninstall_conda', 'install_conda', 'install_python', 'install_packages', 'health_check'],
+      first_year_setup: ['install_conda', 'install_python', 'install_packages', 'install_vscode', 'install_extensions', 'apply_vscode_settings', 'health_check'],
+      health_only: ['health_check', 'verify_kernels']
+    };
+
+    function selectedTokens() {
+      return checkboxes.filter(cb => cb.checked).map(cb => cb.dataset.token);
+    }
+
+    function visibleActionCards() {
+      return actionCards.filter(card => !card.classList.contains('hide'));
+    }
+
+    function setTokens(tokens, mode = 'replace') {
+      const tokenSet = new Set(tokens);
+      checkboxes.forEach(cb => {
+        if (mode === 'replace') {
+          cb.checked = tokenSet.has(cb.dataset.token);
+        } else if (mode === 'add' && tokenSet.has(cb.dataset.token)) {
+          cb.checked = true;
+        }
+      });
+      updateCommand();
+    }
+
+    function updateCardStates() {
+      actionCards.forEach(card => {
+        const checked = !!card.querySelector('input').checked;
+        card.dataset.selected = checked ? 'true' : 'false';
+      });
+    }
+
+    function buildWarnings(tokens) {
+      const warns = [];
+      const has = token => tokens.includes(token);
+
+      if (has('install_vscode') && has('uninstall_vscode')) {
+        warns.push('Both install_vscode and uninstall_vscode are selected. That can be fine for a clean reinstall, but the dispatcher should define the order explicitly.');
+      }
+      if (has('install_conda') && has('uninstall_conda')) {
+        warns.push('Both install_conda and uninstall_conda are selected. This works best if the orchestration script handles uninstall first, then install.');
+      }
+      if (has('install_packages') && !has('install_conda') && !has('install_python')) {
+        warns.push('install_packages is selected without install_conda or install_python. That is okay if the environment already exists, but supporters may want to double-check manually.');
+      }
+
+      return warns;
+    }
+
+    function renderSelections(tokens) {
+      actionCount.textContent = String(tokens.length);
+      visibleCount.textContent = String(visibleActionCards().length);
+
+      if (!tokens.length) {
+        selectionList.innerHTML = '<span class="selection-pill">No actions selected yet</span>';
+      } else {
+        selectionList.innerHTML = tokens.map(token => `
+          <span class="selection-pill">
+            <span>${token}</span>
+            <button class="remove-pill" type="button" data-remove-token="${token}" aria-label="Remove ${token}">×</button>
+          </span>
+        `).join('');
+      }
+
+      const warns = buildWarnings(tokens);
+      if (warns.length) {
+        warningBox.classList.add('show');
+        warningBox.innerHTML = warns.map(w => `<div>${w}</div>`).join('');
+      } else {
+        warningBox.classList.remove('show');
+        warningBox.innerHTML = '';
+      }
+    }
+
+    function buildCommand(tokens) {
+      if (currentOS === 'mac') {
+        if (!tokens.length) {
+          return [
+            '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/dtudk/pythonsupport-scripts/dev/run.sh)"',
+            '',
+            '# Select one or more actions to append them here.'
+          ].join('\\n');
+        }
+
+        return [
+          '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/dtudk/pythonsupport-scripts/dev/run.sh)" -- \\\\',
+          `  ${tokens.map(t => `'${t}'`).join(' \\\\\\n  ')}`
+        ].join('\\n');
+      }
+
+      if (!tokens.length) {
+        return [
+          'PowerShell -ExecutionPolicy Bypass -Command "& {',
+          "  Invoke-Expression (Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/dtudk/pythonsupport-scripts/dev/run.ps1' -UseBasicParsing).Content",
+          '}"',
+          '',
+          '# Select one or more actions to append them here.'
+        ].join('\\n');
+      }
+
+      return [
+        'PowerShell -ExecutionPolicy Bypass -Command "& {',
+        "  Invoke-Expression (Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/dtudk/pythonsupport-scripts/dev/run.ps1' -UseBasicParsing).Content",
+        `}" -Actions "${tokens.join(',')}"`
+      ].join('\\n');
+    }
+
+    function updateCommand() {
+      updateCardStates();
+      const tokens = selectedTokens();
+      osBadge.textContent = currentOS === 'mac' ? 'macOS' : 'Windows';
+      renderSelections(tokens);
+      commandOutput.textContent = buildCommand(tokens);
+    }
+
+    function addHealthCheck() {
+      setTokens(['health_check'], 'add');
+      presetButtons.forEach(button => button.classList.remove('active'));
+    }
+
+    osButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentOS = btn.dataset.os;
+        osButtons.forEach(other => {
+          const active = other === btn;
+          other.classList.toggle('active', active);
+          other.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+        updateCommand();
+      });
+    });
+
+    checkboxes.forEach(cb => cb.addEventListener('change', () => {
+      presetButtons.forEach(button => button.classList.remove('active'));
+      updateCommand();
+    }));
+
+    searchBox.addEventListener('input', () => {
+      const q = searchBox.value.trim().toLowerCase();
+      document.querySelectorAll('[data-section]').forEach(section => {
+        let visibleCountLocal = 0;
+        section.querySelectorAll('.action').forEach(card => {
+          const text = card.innerText.toLowerCase();
+          const show = !q || text.includes(q);
+          card.classList.toggle('hide', !show);
+          if (show) visibleCountLocal += 1;
+        });
+        section.classList.toggle('hide', visibleCountLocal === 0);
+      });
+      updateCommand();
+    });
+
+    clearAll.addEventListener('click', () => {
+      checkboxes.forEach(cb => cb.checked = false);
+      presetButtons.forEach(button => button.classList.remove('active'));
+      updateCommand();
+    });
+
+
+
+    expandPresetHealth.addEventListener('click', addHealthCheck);
+
+    sectionSelectButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const section = button.closest('[data-section]');
+        if (!section) return;
+        section.querySelectorAll('.action:not(.hide) input[type="checkbox"]').forEach(cb => cb.checked = true);
+        presetButtons.forEach(btn => btn.classList.remove('active'));
+        updateCommand();
+      });
+    });
+
+    sectionClearButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const section = button.closest('[data-section]');
+        if (!section) return;
+        section.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+        presetButtons.forEach(btn => btn.classList.remove('active'));
+        updateCommand();
+      });
+    });
+
+    selectionList.addEventListener('click', (event) => {
+      const removeButton = event.target.closest('[data-remove-token]');
+      if (!removeButton) return;
+      const token = removeButton.dataset.removeToken;
+      const checkbox = checkboxes.find(cb => cb.dataset.token === token);
+      if (checkbox) checkbox.checked = false;
+      presetButtons.forEach(btn => btn.classList.remove('active'));
+      updateCommand();
+    });
+
+    presetButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const preset = presets[button.dataset.preset] || [];
+        checkboxes.forEach(cb => {
+          cb.checked = preset.includes(cb.dataset.token);
+        });
+        presetButtons.forEach(btn => btn.classList.toggle('active', btn === button));
+        updateCommand();
+      });
+    });
+
+    async function copyText(text, label) {
+      try {
+        await navigator.clipboard.writeText(text);
+        copyNote.textContent = `${label} copied to clipboard.`;
+      } catch (err) {
+        copyNote.textContent = `Could not copy automatically. Please copy the ${label.toLowerCase()} manually.`;
+      }
+    }
+
+    copyBtn.addEventListener('click', () => copyText(commandOutput.textContent, 'Command'));
+  
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === '/' && document.activeElement !== searchBox) {
+        event.preventDefault();
+        searchBox.focus();
+        searchBox.select();
+      }
+
+      if ((event.key === 'c' || event.key === 'C') && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+        event.preventDefault();
+        copyText(commandOutput.textContent, 'Command');
+      }
+    });
+
+    updateCommand();
+  </script>
+</body>
+</html>
